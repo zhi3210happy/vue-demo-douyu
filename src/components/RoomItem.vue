@@ -40,14 +40,14 @@ export default {
     }
     ,
     created() {
-        this.getInfo(this.count)
+        this.getInfo(this.count,this.roomid)
     },
     methods: {
-        getInfo(page, roomid) {
-            if (typeof(roomid)=='undefined') {
-              var  url = `/douyuapi/RoomApi/live?offset=${page}&limit=28`
+        getInfo(page, id) {
+            if (typeof (id) == 'undefined') {
+                var url = `/douyuapi/RoomApi/live?offset=${page}&limit=28`
             } else {
-              var  url= `/douyuapi/RoomApi/live/${this.roomid}?offset=${page}&limit=28`
+                var url = `/douyuapi/RoomApi/live/${id}?offset=${page}&limit=28`
             }
             this.axios.get(url)
                 .then(response => {
