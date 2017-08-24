@@ -2,7 +2,7 @@
  * @Author: zhi3210happy 
  * @Date: 2017-08-22 17:37:34 
  * @Last Modified by: zhi3210happy
- * @Last Modified time: 2017-08-24 12:13:20
+ * @Last Modified time: 2017-08-24 16:34:13
  */
 import Vue from 'vue'
 import App from './App'
