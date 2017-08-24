@@ -1,7 +1,8 @@
 <template>
-    <div class="mr-item">
+    <div>
         <loading v-if="showLoad"></loading>
-        <router-link :to="'/room/' + room.room_id" v-for="(room,index) in roomList" :key="index">
+        <div class="m-item">
+        <router-link class="mr-item" :to="'/room/' + room.room_id" v-for="(room,index) in roomList" :key="index">
             <img :src="room.room_src" alt="">
             <div class="room-info">
                 <span class="nickname">{{room.nickname}}</span>
@@ -15,8 +16,9 @@
                 {{room.room_name | message}}
             </div>
         </router-link>
+        </div>
         <div class="loadMore" v-if="!showLoad">
-            <span @click="loadMore">点击加载更多</span>
+            <span @click="loadMore" >点击加载更多</span>
         </div>
         <p v-if="error">网络请求失败,请稍后重试...</p>
     </div>
@@ -40,7 +42,7 @@ export default {
     }
     ,
     created() {
-        this.getInfo(this.count,this.roomid)
+        this.getInfo(this.count, this.roomid)
     },
     methods: {
         getInfo(page, id) {
@@ -107,5 +109,19 @@ export default {
 
 .room-title {
     line-height: 30px;
+}
+
+.loadMore {
+    display: block;
+    margin: 10px;
+    text-align: center;
+}
+
+.loadMore span {
+    display: inline-block;
+    line-height: 30px;
+    padding: 0 20px;
+    border-radius: 10px;
+    border: 1px solid #000;
 }
 </style>
