@@ -4,57 +4,22 @@
         <p class="title">{{$route.params.gameName}}</p>
       </back-header>
       <div class="mr-content">
-        <loading v-if="showLoad"></loading>
-        <room-item  v-for="(room,index) in roomList" :r="room" :key="index"></room-item>
-       <p v-if="error">网络请求失败,请稍后重试...</p>  
+        <room-item :roomid="$route.params.gameId"></room-item>      
       </div>
       <back-top></back-top>
-      <div class="loadMore" v-if="!showLoad">
-          <span @click="loadMore">点击加载更多</span>
-        </div>
+      
     </div>
 </template>
 
 <script>
   import BackHeader from '../components/BackHeader'
   import BackTop from '../components/BackTop'
-  import Loading from '../common/Loading'
+
   import RoomItem from '../components/RoomItem';
   export default{
-      data(){
-        return {
-            roomList:[],
-            error:false,
-            showLoad:true,
-            count:0
-        }
-      },
       components:{
-          BackHeader,BackTop,Loading,RoomItem
-      },
-      created(){
-          this.getInfo(this.count)
-      },
-      methods:{
-          getInfo(page){
-            this.axios.get(`/douyuapi/RoomApi/live/${this.$route.params.gameId}?offset=${page}&limit=28`)
-              .then(response =>{
-                this.error = false
-                this.roomList = this.roomList.concat(response.data.data)
-                setTimeout(() => {
-                  this.showLoad = false
-                },500)
-              })
-              .catch(err => {
-                this.error = true
-                this.showLoad = false
-              })
-          },
-          loadMore(){
-              this.count ++
-              this.getInfo(this.count)
-          }
-      }
+          BackHeader,BackTop,RoomItem
+      }    
   }
 
 </script>

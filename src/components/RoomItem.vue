@@ -1,25 +1,74 @@
 <template>
     <div class="mr-item">
-        <router-link :to="'/room/' + r.room_id">
-            <img :src="r.room_src" alt="">
+        <loading v-if="showLoad"></loading>
+        <router-link :to="'/room/' + room.room_id" v-for="(room,index) in roomList" :key="index">
+            <img :src="room.room_src" alt="">
             <div class="room-info">
-                <span class="nickname">{{r.nickname}}</span>
+                <span class="nickname">{{room.nickname}}</span>
                 <span class="count">
                     <i class="icon-group"></i>
-                    {{r.online | number}}
+                    {{room.online | number}}
                 </span>
             </div>
             <div class="room-title">
                 <i class="icon-desktop"></i>
-                {{r.room_name | message}}
+                {{room.room_name | message}}
             </div>
         </router-link>
+        <div class="loadMore" v-if="!showLoad">
+            <span @click="loadMore">点击加载更多</span>
+        </div>
+        <p v-if="error">网络请求失败,请稍后重试...</p>
     </div>
 </template>
 
 <script>
+import Loading from '../common/Loading'
 export default {
-    props: ['r']
+    data() {
+        return {
+            showLoading: true,
+            showLoad: true,
+            roomList: [],
+            error: false,
+            count: 0
+        }
+    },
+    props: ['roomid'],
+    components: {
+        Loading
+    }
+    ,
+    created() {
+        this.getInfo(this.count)
+    },
+    methods: {
+        getInfo(page, roomid) {
+            if (typeof(roomid)=='undefined') {
+              var  url = `/douyuapi/RoomApi/live?offset=${page}&limit=28`
+            } else {
+              var  url= `/douyuapi/RoomApi/live/${this.roomid}?offset=${page}&limit=28`
+            }
+            this.axios.get(url)
+                .then(response => {
+                    this.error = false
+                    this.roomList = this.roomList.concat(response.data.data)
+                    setTimeout(() => {
+                        this.showLoad = false
+                    }, 500)
+                })
+                .catch(err => {
+                    console.log(err)
+                    this.error = true
+                    this.showLoad = false
+                })
+        },
+        loadMore() {
+            this.count++
+            this.getInfo(this.count)
+        }
+    }
+
 }
 </script>
 

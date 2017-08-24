@@ -38,10 +38,11 @@ export default {
         this.categoryList = response.data.data
         setTimeout(() => {
           this.showLoading = false
-        }, 2000)
+        }, 500)
       })
       .catch(err => {
-
+        console.log(err)
+        this.showLoading=false
       })
   }
 }
