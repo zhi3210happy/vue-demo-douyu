@@ -44,7 +44,7 @@ export default {
           this.roomList = this.roomList.concat(response.data.data)
           setTimeout(() => {
             this.showLoading = false
-          }, 1000)
+          }, 700)
         })
         .catch(err => {
           this.error = true

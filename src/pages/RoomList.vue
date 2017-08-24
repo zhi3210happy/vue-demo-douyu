@@ -4,15 +4,14 @@
         <p class="title">{{$route.params.gameName}}</p>
       </back-header>
       <div class="mr-content">
-        <room-item class="room-infor" v-for="(room,index) in roomList" :r="room" :key="index"></room-item>
-        <div class="loadMore" v-if="!showLoad">
-          <span @click="loadMore">点击加载更多</span>
-        </div>
+        <loading v-if="showLoad"></loading>
+        <room-item  v-for="(room,index) in roomList" :r="room" :key="index"></room-item>
+       <p v-if="error">网络请求失败,请稍后重试...</p>  
       </div>
       <back-top></back-top>
-      <loading v-if="showLoad"></loading>
-      <p v-if="error">网络请求失败,请稍后重试...</p>
-
+      <div class="loadMore" v-if="!showLoad">
+          <span @click="loadMore">点击加载更多</span>
+        </div>
     </div>
 </template>
 
@@ -38,13 +37,13 @@
       },
       methods:{
           getInfo(page){
-            this.axios.get(`/douyuapi/RoomApi/live/${this.$route.params.gameId}?offset=${page}&limit=20`)
+            this.axios.get(`/douyuapi/RoomApi/live/${this.$route.params.gameId}?offset=${page}&limit=28`)
               .then(response =>{
                 this.error = false
                 this.roomList = this.roomList.concat(response.data.data)
                 setTimeout(() => {
                   this.showLoad = false
-                },2000)
+                },500)
               })
               .catch(err => {
                 this.error = true
